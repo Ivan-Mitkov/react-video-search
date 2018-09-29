@@ -10,7 +10,7 @@ class SearchBar extends Component {
     }
     render() {
         return (
-            <div>
+            <div className='search-bar'>
                 {/* create input element and pass prop onChange with the value of reference to this.onInputChange  */}
                 <input
                 // Controlled component

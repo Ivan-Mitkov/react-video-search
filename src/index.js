@@ -15,17 +15,25 @@ const API_KEY = 'AIzaSyAkiVy4FcsBskXy6kkS1j6KrVdHJuE16WE';
 class App extends Component {
     constructor(props) {
         super(props);
-        this.state = { videos: [] };
+        this.state = {
+        videos: [],
+        selectedVideo:null
+        };
 
-        YTSearch({ key: API_KEY, term: "react" }, (data) => { this.setState({ videos: data }) });
+        YTSearch({ key: API_KEY, term: "stock exchange" }, (data) => {
+             this.setState({ videos: data,
+                selectedVideo:data[0] }) });
     }
     render() {
         return (
             < div >
                 <SearchBar />
-                <VideoDetail video={this.state.videos[0]}/>
+                {/* passing selected video */}
+                <VideoDetail video={this.state.selectedVideo}/>
                 {/* passing props to videoList */}
-                <VideoList videos={this.state.videos}/>
+                <VideoList 
+                onVideoSelect={selectedVideo=>this.setState({selectedVideo})}
+                videos={this.state.videos}/>
             </div > 
         )
     }
