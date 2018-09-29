@@ -5,11 +5,8 @@ import YTSearch from 'youtube-api-search';
 import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
 import VideoDetail from './components/video_detail';
-
-
-//AIzaSyAkiVy4FcsBskXy6kkS1j6KrVdHJuE16WE
-const API_KEY = 'AIzaSyAkiVy4FcsBskXy6kkS1j6KrVdHJuE16WE';
-
+import _ from 'lodash';
+import API_KEY from './constants';
 
 //create ne component
 class App extends Component {
@@ -19,15 +16,20 @@ class App extends Component {
         videos: [],
         selectedVideo:null
         };
-
-        YTSearch({ key: API_KEY, term: "stock exchange" }, (data) => {
-             this.setState({ videos: data,
-                selectedVideo:data[0] }) });
+        this.videoSearch('us');
+        
+    }
+    videoSearch(term){
+        YTSearch({ key: API_KEY, term: term }, (data) => {
+            this.setState({ videos: data,
+               selectedVideo:data[0] }) });
     }
     render() {
+        //slowing down search
+        const videoSearch=_.debounce((term)=>{this.videoSearch(term)},300)
         return (
             < div >
-                <SearchBar />
+                <SearchBar onSearchTermChange={videoSearch}/>
                 {/* passing selected video */}
                 <VideoDetail video={this.state.selectedVideo}/>
                 {/* passing props to videoList */}
